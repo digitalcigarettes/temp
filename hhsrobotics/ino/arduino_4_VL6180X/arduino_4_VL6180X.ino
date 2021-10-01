@@ -23,47 +23,20 @@ void tcaselect(uint8_t addr){
 void sensors_up_debug(){
 	Wire.begin();
 	
-	//Sensor 0
-	tcaselect(0); s[0].init(); s[0].configureDefault();
-	
-	s[0].writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
-  	s[0].writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
-	
-	s[0].setTimeout(500); s[0].stopContinuous();
-	s[0].startInterleavedContinuous(100);
-	
-	//is_working(s[0]);
-	
-	//Sensor II
-	tcaselect(1); s[1].init(); s[1].configureDefault(); 
-	
-	s[1].writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
-  	s[1].writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
-	
-	s[1].setTimeout(500); s[1].stopContinuous();
-	s[1].startInterleavedContinuous(100);
 
-	//is_working(s[1]);
+//	for(int i=0; i<4; i++){
 
-	//Sensor II
-	tcaselect(2); s[2].init(); s[2].configureDefault(); 
-	
- 	s[2].writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
-  	s[2].writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
+		int i = 0; //debug
+
+		tcaselect(i); s[i].init(); s[i].configureDefault();
 		
-	s[2].setTimeout(500); s[2].stopContinuous();
-	s[2].startInterleavedContinuous(100);
-	
-	//is_working(s[2]);
+		s[i].writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
+		s[i].writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
+		
+		s[i].setTimeout(500); s[i].stopContinuous();
+		s[i].startInterleavedContinuous(100);
 
-	//Sensor III
-    	tcaselect(3); s[3].init(); s[3].configureDefault();
-	
-  	s[3].writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
-  	s[3].writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
-	
-	s[3].setTimeout(500); s[3].stopContinuous();
-	s[3].startInterleavedContinuous(100);
+//	}	
 	
   	//is_working(s[3]);
 
@@ -127,14 +100,15 @@ void setup(){
 }
 
 void loop(){
-	tcaselect(0); d[0] = s[0].readRangeContinuousMillimeters(); 
-	tcaselect(1); d[1] = s[1].readRangeContinuousMillimeters(); 
-	tcaselect(2); d[2] = s[2].readRangeContinuousMillimeters(); 
-	tcaselect(3); d[3] = s[3].readRangeContinuousMillimeters();
+//	for(int j=0; j<4; j++){
+		int j = 1; //debug
+		tcaselect(j); d[j] = s[j].readRangeContinuousMillimeters(); 
+
+//	}
 	
 	
 	
 	//debugging purposes...
-	//Serial.println((String)"d0: "+d[0]+" d1: "+d[1]+" d2: "+d[2]+" d3: "+d[3]);
-	send();
+	Serial.println((String)"d0: "+d[0]+" d1: "+d[1]+" d2: "+d[2]+" d3: "+d[3]);
+	//send();
 }
