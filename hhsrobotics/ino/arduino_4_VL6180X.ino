@@ -4,8 +4,7 @@
 #define TCAADDR 0x70
 #define RIOADDR 0x2c /*DUNNO RIGHT NOW, MAKE SURE TO CHANGE...*/
 
-VL6180X s0, s1, s2, s3;
-int d0=0, d1=0, d2=0, d3=0; //to lazy to make to an array...
+VL6180X s0, s1, s2, s3; //to lazy to have array...
 
 int d[4] = {0,0,0,0};
 
@@ -61,10 +60,10 @@ void setup(){
 }
 
 void loop(){
-	tcaselect(0); d0 = s0.readRangeContinuousMillimeters(); 
-	tcaselect(1); d1 = s1.readRangeContinuousMillimeters(); 
-	tcaselect(2); d2 = s2.readRangeContinuousMillimeters(); 
-	tcaselect(3); d3 = s3.readRangeContinuousMillimeters();
+	tcaselect(0); d[0] = s0.readRangeContinuousMillimeters(); 
+	tcaselect(1); d[1] = s1.readRangeContinuousMillimeters(); 
+	tcaselect(2); d[2] = s2.readRangeContinuousMillimeters(); 
+	tcaselect(3); d[3] = s3.readRangeContinuousMillimeters();
 	
 	
 	
