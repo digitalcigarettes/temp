@@ -2,9 +2,14 @@
 #include <VL6180X.h>
 
 #define TCAADDR 0x70
+#define RIOADDR 0x2c /*DUNNO RIGHT NOW, MAKE SURE TO CHANGE...*/
 
 VL6180X s0, s1, s2, s3;
-int d0=0, d1=0, d2=0, d3=0;
+int d0=0, d1=0, d2=0, d3=0; //to lazy to make to an array...
+
+int d[4] = {0,0,0,0};
+
+
 
 void sensors_up(){
 	Wire.begin();
@@ -40,7 +45,14 @@ void tcaselect(uint8_t addr){
 }
 
 void send(){
-	//Do later i'm tired
+	Wire.beginTransmission(RIOADDR);
+
+	//Sync send...
+	for(int i=0; i<4; i++){
+		Wire.write(d[i]);
+	}
+	Wire.endTransmission();
+	
 }
 
 void setup(){
@@ -53,7 +65,10 @@ void loop(){
 	tcaselect(1); d1 = s1.readRangeContinuousMillimeters(); 
 	tcaselect(2); d2 = s2.readRangeContinuousMillimeters(); 
 	tcaselect(3); d3 = s3.readRangeContinuousMillimeters();
+	
+	
+	
 	//debugging purposes...
-	Serial.println((String)"d0:"+d0+"' d1:"+d1+"; d2:"+d2+" d3:"+d3");
-
+	//Serial.println((String)"d0:"+d[0]+"' d1:"+d[1]+"; d2:"+d[2]+" d3:"+d[3]");
+	send();
 }
