@@ -12,20 +12,11 @@ int d[4] = {0,0,0,0};
 
 //setup
 void tcaselect(uint8_t addr){
-	if(i>7) return; 
+	if(addr > 7) return; 
 	
 	Wire.beginTransmission(TCAADDR);
 	Wire.write(1 << addr);
 	Wire.endTransmission();
-}
-
-void is_working(VL6180X sr){
-	if(sr.init() != 0x60){
-		Serial.print(F("VL6180X detected?\t")); Serial.println(F("No")); 
-		return;
-	}
-	
-	Serial.print(F("VL6180X detected?\t")); Serial.println(F("Yes")); 
 }
 
 //init sensors in array format
@@ -41,7 +32,7 @@ void sensors_up_debug(){
 	s[0].setTimeout(500); s[0].stopContinuous();
 	s[0].startInterleavedContinuous(100);
 	
-	is_working(s[0]);
+	//is_working(s[0]);
 	
 	//Sensor II
 	tcaselect(1); s[1].init(); s[1].configureDefault(); 
@@ -52,7 +43,7 @@ void sensors_up_debug(){
 	s[1].setTimeout(500); s[1].stopContinuous();
 	s[1].startInterleavedContinuous(100);
 
-	is_working(s[1]);
+	//is_working(s[1]);
 
 	//Sensor II
 	tcaselect(2); s[2].init(); s[2].configureDefault(); 
@@ -63,7 +54,7 @@ void sensors_up_debug(){
 	s[2].setTimeout(500); s[2].stopContinuous();
 	s[2].startInterleavedContinuous(100);
 	
-	is_working(s[2]);
+	//is_working(s[2]);
 
 	//Sensor III
     	tcaselect(3); s[3].init(); s[3].configureDefault();
@@ -74,7 +65,7 @@ void sensors_up_debug(){
 	s[3].setTimeout(500); s[3].stopContinuous();
 	s[3].startInterleavedContinuous(100);
 	
-  	is_working(s[3]);
+  	//is_working(s[3]);
 
 	
 	delay(300);
@@ -144,6 +135,6 @@ void loop(){
 	
 	
 	//debugging purposes...
-	//Serial.println((String)"d0:"+d[0]+"' d1:"+d[1]+"; d2:"+d[2]+" d3:"+d[3]");
+	//Serial.println((String)"d0: "+d[0]+" d1: "+d[1]+" d2: "+d[2]+" d3: "+d[3]);
 	send();
 }
