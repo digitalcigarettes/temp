@@ -16,6 +16,7 @@ void tcaselect(uint8_t addr){
 	
 	Wire.beginTransmission(TCAADDR);
 	Wire.write(1 << addr);
+	
 	Wire.endTransmission();
 }
 
@@ -26,7 +27,7 @@ void sensors_up_debug(){
 
 //	for(int i=0; i<4; i++){
 
-		int i = 0; //debug
+		int i = 1; //debug
 
 		tcaselect(i); s[i].init(); s[i].configureDefault();
 		
@@ -45,33 +46,6 @@ void sensors_up_debug(){
 
 }
 
-/*
-void sensors_up(){
-	Wire.begin();
-	s0.init(); s1.init(); s2.init(); s3.init();
-	s0.configureDefault(); s1.configureDefault(); s2.configureDefault(); s3.configureDefault();
-	
-	
-	s0.writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
-	s1.writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
- 	s2.writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
-  	s3.writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
-  
-  	s0.writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
-  	s1.writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
-  	s2.writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
-  	s3.writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
-
-	s1.setTimeout(500); s2.setTimeout(500); s3.setTimeout(500); s4.setTimeout(500);
-	s1.stopContinuous(); s2.stopContinuous(); s3.stopContinuous(); s4.stopContinuous();
-
-	delay(300);
-
-	s0.startInterleavedContinuous(100); s1.startInterleavedContinuous(100); s2.startInterleavedContinuous(100); s3.startInterleavedContinuous(100);
-
-}
-
-*/
 
 //to the roborio
 void send(){
