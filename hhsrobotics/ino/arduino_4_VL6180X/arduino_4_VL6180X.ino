@@ -4,13 +4,13 @@
 #define TCAADDR 0x70
 #define RIOADDR 0x2c /*DUNNO RIGHT NOW, MAKE SURE TO CHANGE...*/
 
-//VL6180X s0, s1, s2, s3; //to lazy to have array...
-
-VL6180X s[4];
-int d[4] = {0,0,0,0};
+const int N = 4;
 
 
-//setup
+VL6180X s[N];
+int d[N];
+
+
 void tcaselect(uint8_t addr){
 	if(addr > 7) return; 
 	
@@ -21,40 +21,40 @@ void tcaselect(uint8_t addr){
 }
 
 //init sensors in array format
-void sensors_up_debug(){
+void _init(){
 	Wire.begin();
 	
 
-//	for(int i=0; i<4; i++){
-
-		int i = 1; //debug
+	for(int i=0; i<N; i++){
 
 		tcaselect(i); s[i].init(); s[i].configureDefault();
 		
 		s[i].writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
 		s[i].writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
 		
-		s[i].setTimeout(500); s[i].stopContinuous();
+		s[i].setTimeout(150); s[i].stopContinuous();
+
+		delay(100); //time to do its stuff
+
 		s[i].startInterleavedContinuous(100);
-
-//	}	
+		
+		Serial.println((String)"Initialized Sensor: "+i+";"); // #debug
+	}	
 	
-  	//is_working(s[3]);
+  	//is_working();
 
 	
-	delay(300);
+	delay(200);
 
 }
 
 
 //to the roborio
 void send(){
+
 	Wire.beginTransmission(RIOADDR);
 
-	//Sync send...
-	for(int i=0; i<4; i++){
-		Wire.write(d[i]);
-	}
+	for(int i=0; i<N; i++) Wire.write(d[i]);
 	
 	Wire.endTransmission();
 	
@@ -66,23 +66,22 @@ void setup(){
 	
 	VL6180X model_s;
 
-	for(int i=0; i<4; i++){
+	for(int i=0; i<N; i++){
 		s[i] = model_s;
+		d[i] = 0;
 	}
 	
-	sensors_up_debug();
+	_init();
 }
 
 void loop(){
-//	for(int j=0; j<4; j++){
-		int j = 1; //debug
-		tcaselect(j); d[j] = s[j].readRangeContinuousMillimeters(); 
 
-//	}
+	for(int j=0; j<N; j++){
+		tcaselect(j); d[j] = s[j].readRangeContinuousMillimeters(); 
+		
+		Serial.println((String)"Sensor: "+j+"; Value: "+d[j]+";"); //#debug
+	}
 	
 	
-	
-	//debugging purposes...
-	Serial.println((String)"d0: "+d[0]+" d1: "+d[1]+" d2: "+d[2]+" d3: "+d[3]);
-	//send();
+	send();
 }
