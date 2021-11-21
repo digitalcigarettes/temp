@@ -4,10 +4,10 @@
 #define TCAADDR 0x70
 #define RIOADDR 0x2c /*DUNNO RIGHT NOW, MAKE SURE TO CHANGE...*/
 
-int sC  = 4;
+int sensorcount  = 4;
 
 VL6180X s1[4];
-int d[sC];
+int d[4];
 
 
 void tcaselect(uint8_t addr){
@@ -24,7 +24,7 @@ void _init(){
   Wire.begin();
   
 
-  for(int i=0; i<sC; i++){
+  for(int i=0; i<sensorcount; i++){
 
     tcaselect(i); s[i].init(); s[i].configureDefault();
     
@@ -53,7 +53,7 @@ void send(){
 
   Wire.beginTransmission(RIOADDR);
 
-  for(int i=0; i<sC; i++) Wire.write(d[i]);
+  for(int i=0; i<sensorcount; i++) Wire.write(d[i]);
   
   Wire.endTransmission();
   
@@ -65,7 +65,7 @@ void setup(){
   
   VL6180X model_s;
 
-  for(int i=0; i<sC; i++){
+  for(int i=0; i<sensorcount; i++){
     s[i] = model_s;
     d[i] = 0;
   }
@@ -75,7 +75,7 @@ void setup(){
 
 void loop(){
 
-  for(int j=0; j<sC; j++){
+  for(int j=0; j<sensorcount; j++){
     tcaselect(j); d[j] = s[j].readRangeContinuousMillimeters(); 
     
     Serial.println((String)"Sensor: "+j+"; Value: "+d[j]+";"); //#debug
